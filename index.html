@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INTERCONTINENTAL COLLEGE, KANO</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+        <img src="images/Inter_Logo_Final-02-removebg-preview.png" alt="Intercontinental">
+        <h1>INTERCONTINENTAL SCHOOLS, KANO</h1>
+        
+    </div>
+   <div class="report">
+    <p>INTERCONTINENTAL TEACHERS BIO DATA</p>
+   </div>
+    </header>
+
+    
+    <div class="contact-col">
+         
+        <form name="submit-to-google-sheet">
+  
+           <div class="input-group">
+              <label>Full Name</label>
+              <input type="text" name="Name" placeholder="Teachers name" required>
+              
+           </div>
+           <div class="input-group"> 
+            <label>Gender</label>
+           <select class="select-btn" name="Gender">
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            </select>
+            </div>
+
+           
+  
+            <div class="input-group"> 
+              <label>Section</label>
+              <select class="select-btn" id="stateSelect" name="Section" onchange="updateLocalGovernments()">
+                  <option value="">Select Section</option>
+                  <option value="Primary">Primary</option>
+                  <option value="College">College</option>
+                  <option value="CollegeDaroon">College Daroon-noor</option>
+                  <option value="Islamiyya">Islamiyya</option>
+                  <!-- Add more state options here -->
+              </select>
+                 
+           </div>
+           <div class="input-group"> 
+            <label>class</label>
+           <select class="select-btn" id="lgSelect" name="Class">
+            <option value="">Select a Class</option>
+            <!-- Local governments for the selected state will be populated here with JavaScript -->
+        </select>
+        </div>
+  
+            <div class="input-group"> 
+              <label>Phone Number</label>
+              <input type="tel" name="Phone" placeholder="Enter phone number" required>
+              
+           </div>
+
+           <div class="input-group">
+            <label>Next of Kin Name</label>
+            <input type="text" name="Next of Kin Name" placeholder="next of kin name" required>
+            
+         </div>
+
+  
+            <div class="input-group"> 
+              <label>Next of Kin Phone</label>
+              <input type="tel" name="Next of Kin Phone" placeholder="Enter phone number" required>
+              
+           </div>
+            <div class="input-group"> 
+              <label>Relationship</label>
+              <select class="select-btn" name="Relationship" >
+               <option value="">Select Relationship</option>
+               <option value="Husband">Husband</option>
+               <option value="Wife">Wife</option>
+               <option value="Son">Son</option>
+               <option value="Daughter">Daughter</option>
+               <option value="Father">Father</option>
+               <option value="Mother">Mother</option>
+               <option value="Bother">Brother</option>
+               <option value="Sister">Sister</option>
+              </select>
+              
+           </div>
+            <div class="input-group"> 
+              <label>NIN Number</label>
+              <input type="tel" name="NIN Number" placeholder="Enter NIN number" required>
+              
+           </div>
+            <div class="input-group"> 
+              <label>Address</label>
+               <textarea name="Address" rows="3" placeholder="Enter Valid Address"></textarea>
+           </div>
+  
+          
+  
+           <button type="submit">Submit</button>
+           <span id="msg"></span>
+        </form>
+     </div>
+<script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxC1i2h6SkiKmhScl4GOQhwiRf_U_F3aD2j5A4gtkt00CKfR3ItUbAniyUIsiUHuJ_E/exec'
+  const form = document.forms['submit-to-google-sheet']
+  const msg = document.getElementById("msg")
+
+  form.addEventListener('submit', e => {
+    e.preventDefault()
+    fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+      .then(response => {
+         msg.innerHTML = "Information Save Successfully"
+         setTimeout(function(){
+            msg.innerHTML = ""  
+         },6000)
+         form.reset()
+      })
+      .catch(error => console.error('Error!', error.message))
+  })
+
+ 
+  const localGovernments = {
+            Primary: ["Special Teacher", "Sepper Legend CON", "Sepper Legend DN", "Pre KG CON", "Pre KG DN", "Lower KG CON", "Lower KG DN", "Upper KG CON", "Upper KG DN", "Primary 1 CON", "Primary 1 DN", "Primary 1 DN", "Primary 2 CON", "Primary 2 DN", "Primary 3 CON", "Primary 3 DN", "Primary 4 CON", "Primary 4 DN", "Primary 5 CON", "Primary 5 DN", "Primary 1 HI TECH"],
+            College: ["JSS 1", "JSS 2", "JSS 3", "SS 1", "SS 2", "SS 3", "JSS 1 HI TECH", "SS 1 HI TECH"],
+            CollegeDaroon: ["JSS 1 DN", "JSS 2DN", "JSS 3DN", "SS 1DN", "SS 2DN", "SS 3DN",],
+            Islamiyya: ["Temyidi", "Nursery 1DN", "Nursery 2DN", "Nursery 3DN", "Primary 1DN", "Primary 2DN", "Primary 3DN", "Primary 4DN", "Primary 5DN",],
+            /* Add local governments for other states here */
+        };
+
+        function updateLocalGovernments() {
+            const stateSelect = document.getElementById("stateSelect");
+            const lgSelect = document.getElementById("lgSelect");
+            const selectedState = stateSelect.value;
+
+            // Clear previous options
+            lgSelect.innerHTML = '<option value="">Select a Class</option>';
+
+            // Populate local governments based on the selected state
+            if (selectedState in localGovernments) {
+                const lgs = localGovernments[selectedState];
+                lgs.forEach((lg) => {
+                    const option = document.createElement("option");
+                    option.value = lg;
+                    option.textContent = lg;
+                    lgSelect.appendChild(option);
+                });
+            }
+        }
+</script>
+</body>
+</html>
